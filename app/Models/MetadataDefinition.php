@@ -5,17 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Practice extends Model
+class MetadataDefinition extends Model
 {
     protected $fillable = [
-        'external_code',
-        'file_path',
+        'code',
+        'label',
+        'type',
     ];
 
-    /**
-     * Metadati dinamici associati alla pratica
-     */
-    public function metadata()
+    public function values(): HasMany
     {
         return $this->hasMany(PracticeMetadata::class);
     }
