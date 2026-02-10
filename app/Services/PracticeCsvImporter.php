@@ -48,10 +48,25 @@ class PracticeCsvImporter
                     continue;
                 }
 
-                $practice = Practice::create([
-                    'external_code' => $data['external_code'] ?? null,
-                    'file_path'     => $data['file_path'] ?? null,
-                ]);
+                $rawExternalCode = $data['external_code'] ?? '';
+
+                $externalCode = strtoupper(trim(
+                    preg_replace('/\s+/', ' ', (string) $rawExternalCode)
+                ));
+
+                if ($externalCode === '') {
+                    throw new \RuntimeException('external_code mancante o vuoto nel CSV');
+                }
+
+                $practice = Practice::where('external_code', $externalCode)->first();
+
+                if (!$practice) {
+                    $practice = new Practice();
+                    $practice->external_code = $externalCode;
+                }
+
+                $practice->file_path = $data['file_path'] ?? null;
+                $practice->save();
 
                 // Verifica file path (read-only)
                 if (! empty($practice->file_path)) {
@@ -82,11 +97,15 @@ class PracticeCsvImporter
                         ]
                     );
 
-                    PracticeMetadata::create([
-                        'practice_id'            => $practice->id,
-                        'metadata_definition_id' => $definition->id,
-                        'value'                  => $value,
-                    ]);
+                    PracticeMetadata::updateOrCreate(
+                        [
+                            'practice_id'            => $practice->id,
+                            'metadata_definition_id' => $definition->id,
+                        ],
+                        [
+                            'value' => $value,
+                        ]
+                    );
                 }
 
                 $imported++;
@@ -99,6 +118,8 @@ class PracticeCsvImporter
     protected function normalizeHeaders(array $headers): array
     {
         return array_map(function ($header) {
+            $header = preg_replace('/^\xEF\xBB\xBF/', '', (string) $header);
+
             return trim(
                 strtolower(
                     str_replace(' ', '_', $header)
