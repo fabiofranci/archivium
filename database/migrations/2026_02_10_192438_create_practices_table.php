@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('practices', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->string('status')->default('open'); // open | closed
+
+            $table->string('external_id')->nullable()->index();
+            $table->string('practice_type')->nullable();
+            $table->string('status')->default('open');
+
+            $table->timestamp('opened_at')->nullable();
+            $table->timestamp('closed_at')->nullable();
+
             $table->timestamps();
         });
     }
