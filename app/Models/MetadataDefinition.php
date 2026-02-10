@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class MetadataDefinition extends Model
+{
+    protected $fillable = [
+        'code',
+        'label',
+        'type',
+    ];
+
+    public function values(): HasMany
+    {
+        return $this->hasMany(PracticeMetadata::class);
+    }
+}

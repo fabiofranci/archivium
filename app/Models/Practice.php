@@ -19,19 +19,18 @@ class Practice extends Model
         'closed_at' => 'datetime',
     ];
 
-    // 🔗 Metadati dinamici
     public function metadata()
     {
         return $this->hasMany(PracticeMetadata::class);
     }
 
-    // 📎 Documenti archiviati
     public function documents()
     {
         return $this->hasMany(Document::class);
     }
 
-    // 📁 Accesso agli atti
+    // Se hai creato access_request_practices (opzionale), lascia questa relazione.
+    // Se NON hai quella tabella, puoi commentarla o rimuoverla.
     public function accessRequests()
     {
         return $this->belongsToMany(

@@ -6,16 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('practices', function (Blueprint $table) {
             $table->id();
 
+            // Identificativo proveniente dal CSV/gestionale sorgente
             $table->string('external_id')->nullable()->index();
+
+            // Tipo pratica (se utile per filtri, eventuale enum in futuro)
             $table->string('practice_type')->nullable();
+
+            // Stato interno (open/closed/archived ecc.)
             $table->string('status')->default('open');
 
             $table->timestamp('opened_at')->nullable();
@@ -23,11 +25,12 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        // Se vuoi unicità per external_id:
+        // NB: se external_id può essere null o non garantito univoco dal sorgente, NON metterla.
+        // Schema::table('practices', fn (Blueprint $t) => $t->unique('external_id'));
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('practices');
