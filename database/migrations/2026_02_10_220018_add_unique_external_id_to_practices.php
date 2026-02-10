@@ -12,14 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('practices', function (Blueprint $table) {
-            $table->unique('external_code');
+            $table->unique('external_id');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('practices', function (Blueprint $table) {
-            $table->dropUnique(['external_code']);
+            //
         });
     }
 };

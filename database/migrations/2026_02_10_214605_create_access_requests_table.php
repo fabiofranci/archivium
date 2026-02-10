@@ -14,12 +14,8 @@ return new class extends Migration
         Schema::create('access_requests', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('entity_id')
-                ->constrained('entities')
-                ->cascadeOnDelete();
-
-            $table->string('protocol_number')->nullable(); // opzionale
-            $table->string('subject'); // oggetto richiesta
+            $table->string('protocol_number')->nullable();
+            $table->string('subject');
 
             // Richiedente
             $table->string('requester_name');
@@ -27,19 +23,17 @@ return new class extends Migration
             $table->string('requester_email')->nullable();
             $table->enum('requester_type', ['citizen', 'professional', 'delegate']);
 
-            // Stato pratica
+            // Stato
             $table->enum('status', [
-                'pending',        // ricevuta
-                'in_progress',    // presa in carico
-                'completed',      // documenti pronti
-                'expired',        // accesso scaduto
-                'revoked',        // revocata
+                'pending',
+                'in_progress',
+                'completed',
+                'expired',
+                'revoked',
             ])->default('pending');
 
             $table->timestamp('requested_at')->nullable();
             $table->timestamp('processed_at')->nullable();
-
-            // Accesso temporaneo
             $table->timestamp('expires_at')->nullable();
 
             // Tecnico che la gestisce
@@ -49,7 +43,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->index(['entity_id', 'status']);
+            $table->index('status');
             $table->index('requester_fiscal_code');
         });
     }
