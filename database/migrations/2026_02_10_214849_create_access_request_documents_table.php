@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('access_request_documents', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('access_request_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('document_id')
+                ->constrained('documents')
+                ->cascadeOnDelete();
+
+            $table->timestamps();
+
+            $table->unique(['access_request_id', 'document_id']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('access_request_documents');
+    }
+};
