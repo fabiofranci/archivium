@@ -3,8 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Stancl\Tenancy\Database\Models\Tenant;
-use Stancl\Tenancy\Database\Models\Domain;
+use App\Models\Tenant;
 
 class ArchiviumTenantCreate extends Command
 {
@@ -14,21 +13,19 @@ class ArchiviumTenantCreate extends Command
     public function handle(): int
     {
         $slug = $this->argument('slug');
-        $baseDomain = config('app.tenancy_base_domain');
+        $baseDomain = config('tenancy.central_domains')[2] ?? config('app.tenancy_base_domain'); // fallback
+        $baseDomain = config('app.tenancy_base_domain') ?? env('TENANCY_BASE_DOMAIN');
 
-        // Crea tenant
         $tenant = Tenant::create([
             'id' => $slug,
         ]);
 
-        // Associa dominio
-        Domain::create([
-            'domain'    => "{$slug}.{$baseDomain}",
-            'tenant_id' => $tenant->id,
+        $tenant->domains()->create([
+            'domain' => "{$slug}." . $baseDomain,
         ]);
 
-        $this->info('Tenant creato correttamente');
-        $this->line("Dominio: http://{$slug}.{$baseDomain}:8000");
+        $this->info("Tenant creato: {$slug}");
+        $this->line("Dominio: http://{$slug}.{$baseDomain}:8000/admin");
 
         return self::SUCCESS;
     }

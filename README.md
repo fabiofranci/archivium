@@ -1,30 +1,44 @@
 # Archivium
 
-Archivium è una piattaforma cloud per la gestione di archivi documentali e fascicoli digitali,
-pensata per enti pubblici e grandi archivi strutturati.
+Archivium è una piattaforma web per la gestione e la digitalizzazione degli archivi comunali
+(pratiche edilizie, documenti amministrativi, fascicoli storici),
+pensata per installazioni **dedicate per singolo Ente**.
 
-Stack principale:
-- Laravel
-- Filament (admin panel)
-- MySQL
-- Queue database-based
-- Multi-tenancy DB-per-tenant (stancl/tenancy)
+## Modello di distribuzione
+
+Archivium utilizza un modello **1 Comune = 1 istanza applicativa**:
+
+- una VPS o server dedicato per ogni Comune
+- un database dedicato
+- un dominio dedicato (es. `comune-londa.archivium.cloud`)
+- nessuna multi-tenancy applicativa
+
+Questa scelta garantisce:
+- isolamento completo dei dati (GDPR / PA-friendly)
+- semplicità operativa
+- facilità di backup e disaster recovery
+- possibilità di installazione on-premise
 
 ---
 
 ## Requisiti
 
 - PHP >= 8.2
-- Composer
 - MySQL / MariaDB
-- Node.js (per asset, se necessario)
-- Ambiente *nix o Docker consigliato
+- Composer
+- Node.js (per build frontend, opzionale)
+- Web server (Nginx o Apache)
 
 ---
 
-## Installazione
+## Installazione (sviluppo / produzione)
 
-### 1. Clona il repository
 ```bash
-git clone <repo-url> archivium
+git clone https://github.com/<org>/archivium.git
 cd archivium
+
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
