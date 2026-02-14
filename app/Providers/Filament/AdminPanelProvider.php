@@ -27,6 +27,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Archivium')
+            ->brandLogo(asset('images/archivium-logo.png'))
+            ->brandLogoHeight('20rem')
+            ->favicon(asset('images/favicon.png'))
             ->colors([
                 'primary' => '#1E3A8A',
             ])

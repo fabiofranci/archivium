@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="320" height="80" viewBox="0 0 320 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- Simbolo archivio stilizzato -->
+    <rect x="10" y="20" width="36" height="40" rx="6" fill="#1E3A8A"/>
+    <rect x="16" y="28" width="24" height="4" rx="2" fill="white"/>
+    <rect x="16" y="36" width="24" height="4" rx="2" fill="white"/>
+    <rect x="16" y="44" width="18" height="4" rx="2" fill="white"/>
+
+    <!-- Testo Archivium -->
+    <text 
+        x="60" 
+        y="50" 
+        font-family="Inter, sans-serif" 
+        font-weight="600" 
+        font-size="36" 
+        fill="#1E3A8A"
+        letter-spacing="-0.5"
+    >
+        Archivium
+    </text>
+
+</svg>
+
